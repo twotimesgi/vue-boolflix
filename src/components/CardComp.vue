@@ -14,16 +14,20 @@
         </div>
         <div>
           <span>Lingua originale: </span>
-          <img
+          <img v-if="langToCountryCode(item.original_language).res"
             class="flag"
             :src="
               'https://flagcdn.com/w20/' +
-              getCountryCode(item.original_language) +
+              langToCountryCode(item.original_language).text +
               '.png'
             "
           />
+          <span v-else>{{ langToCountryCode(item.original_language).text }}</span>
         </div>
-        <div><span>Voto: </span>{{ item.vote_average }}</div>
+        <div><span>Voto: </span>
+        <span v-for="i in Math.ceil(item.vote_average / 2)" :key="i">&#9733;</span>
+        <span v-for="i in 5 - Math.ceil(item.vote_average / 2)" :key="i+5">&#9734;</span>
+        </div>
         <div v-if="item.overview != ''">
           <span>Overview: </span>{{ item.overview }}
         </div>
@@ -39,24 +43,43 @@ export default {
     item: Object,
   },
   methods: {
-    getCountryCode(lang){
+    langToCountryCode(lang){
       switch (lang) {
         case 'en':
-          return "us";
+          return {res: true, text: "us"};
         case 'ja':
-          return "jp";
+          return {res: true, text: "jp"};
         case 'ko':
-          return "kr";
+          return {res: true, text: "kr"};
         case "zh":
-          return 'cn';
+          return {res: true, text: "cn"};
+        case "da":
+          return {res: true, text: "dk"};
+        case "hi":
+          return {res: true, text: "in"};
+        case "el":
+          return {res: true, text: "gr"};
+        case "cs":
+          return {res: true, text: "cz"};
+        case "uk":
+          return {res: true, text: "gb"};
+        case "it":
+          return {res: true, text: "it"};
+        case "fr":
+          return {res: true, text: "fr"};
+        case "pt":
+          return {res: true, text: "pt"};
         default:
-          return lang;
+          return {res: false, text: lang};
     }
   }
 },
 };
 </script>
 <style lang="scss" scoped>
+.star{
+  width: 15px;
+}
 .flip-card {
   background-color: transparent;
   width: 300px;

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <header-comp @search="search"/>
-    <main-comp :query="query" :mResults="mResults"/>
+    <header-comp @search="search" />
+    <main-comp :query="query" :loaded="loaded" :sResults ="sResults" :mResults="mResults"/>
   </div>
 </template>
  
@@ -19,21 +19,35 @@ export default {
   data(){
     return {  
       mResults: {},
-      query: ""
+      sResults: {},
+      query: "",
+      loaded: false
     }
   },
   mounted(){
     this.search("");
   },
   methods:{
-    search(query){
+    searchMovies(query){
       let query_url;
       query == "" ? query_url = "https://api.themoviedb.org/3/discover/movie?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&sort_by=popularity.desc" : query_url = "https://api.themoviedb.org/3/search/movie?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=it-IT&include_adult=false&query="+query;
       Axios.get(query_url).then((response) => {
       this.mResults = response.data;
       this.query = query;
     });
-    }
+    },
+    searchSeries(query){
+      let query_url;
+      query == "" ? query_url = "https://api.themoviedb.org/3/discover/tv?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&sort_by=popularity.desc" : query_url = "https://api.themoviedb.org/3/search/tv?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=it-IT&include_adult=false&query="+query;
+      Axios.get(query_url).then((response) => {
+      this.sResults = response.data;
+      this.query = query;
+    });
+  },
+  search(query){
+    this.searchMovies(query);
+    this.searchSeries(query);
+  }
   }
 }
 </script>

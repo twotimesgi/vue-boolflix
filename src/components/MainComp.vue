@@ -1,9 +1,13 @@
 <template>
   <main>
      <div class="main-container">
-       <div class="title-box">Risultati per: "{{ query }}"</div>
+        <div v-if="query != ''" class="title-box">Films per: "{{ query }}"</div>
+        <div v-else class="title-box">Film Popolari</div>
       <card-comp v-for="item in mResults.results" :item="item" :key="item.id"/> 
-    </div>
+        <div v-if="query != ''" class="title-box">Serie TV per: "{{ query }}"</div>
+        <div v-else class="title-box">Serie TV Popolari</div>
+      <card-comp v-for="item in sResults.results" :item="item" :key="item.id" />
+     </div>
   </main>
 </template>
 
@@ -13,11 +17,13 @@ import CardComp from './CardComp.vue'
 export default {
   name: 'MainComp', 
   components:{
-    CardComp
+    CardComp,
   },
   props:{
     mResults: Object,
-    query: String
+    sResults: Object,
+    query: String,
+    loaded: Boolean
   }
 }
 </script>
@@ -33,9 +39,10 @@ export default {
     margin: 0 auto;
     padding: 30px 0;
   }
+  
   .title-box{
     width: 100%;
-    padding: 0 20px;
+    padding: 0 50px;
     color: rgb(201, 201, 201);
   }
 </style>

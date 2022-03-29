@@ -1,0 +1,57 @@
+<template>
+  <div class="loader"></div>
+</template>
+
+<script>
+
+export default {
+  name: 'LoaderComp', 
+  methods: {
+    search(query){
+      this.$emit("search", query);
+    }
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss" scoped>
+  .loader {
+ border: 0 solid transparent;
+ border-radius: 50%;
+ width: 150px;
+ height: 150px;
+}
+
+.loader::before,
+.loader::after {
+ content: '';
+ border: 7px solid #ccc;
+ border-radius: 50%;
+ width: inherit;
+ height: inherit;
+ position: absolute;
+ animation: loader 2s linear infinite;
+ opacity: 0;
+}
+
+.loader::before {
+ animation-delay: 1s;
+}
+
+@keyframes loader {
+ 0% {
+  transform: scale(1);
+  opacity: 0;
+ }
+
+ 50% {
+  opacity: 1;
+ }
+
+ 100% {
+  transform: scale(0);
+  opacity: 0;
+ }
+}
+</style>

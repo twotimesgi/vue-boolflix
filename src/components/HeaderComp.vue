@@ -2,19 +2,25 @@
   <header>
     <div class="header-container">
       <img class="logo" src="../assets/logo.png">
-      <div class="filters">
-        <input class="search-field" placeholder="Cerca..." type="text">
-        <input class="search-btn" type="button" value="Cerca">
-      </div>
+      <search-comp @search="search"/>
     </div>
   </header>
 </template>
 
 <script>
+import SearchComp from './SearchComp.vue';
+
 export default {
+  components: { SearchComp },
    name: 'HeaderComp', 
   props: {
     msg: String
+  },
+  methods: {
+    search(query){
+      this.$emit("search", query);
+      console.log(query)
+    }
   }
 }
 </script>
@@ -39,24 +45,6 @@ header{
 
 .logo{
   width: 150px;
-}
-
-.search-field{
-  height: 30px;
-  margin-right: 20px;
-  padding: 0 5px;
-}
-
-.search-btn{
-  background-color: #db0000;
-  border: none;
-  height: 30px;
-  color: white;
-  padding: 0 25px;
-
-  &:active{
-    background-color: #831010;
-  }
 }
 
 @media screen and (max-width: 600px){

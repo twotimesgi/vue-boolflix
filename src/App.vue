@@ -1,21 +1,37 @@
 <template>
   <div id="app">
     <header-comp />
+    <main-comp :movieResults="movieResults"/>
   </div>
 </template>
 
 <script>
 import HeaderComp from './components/HeaderComp.vue'
+import MainComp from './components/MainComp.vue'
+import Axios from "axios"
 
 export default {
   name: 'App',
   components: {
-    HeaderComp
+    HeaderComp,
+    MainComp
+  },
+  data(){
+    return {  
+      movieResults: {}
+    }
+  },
+  mounted(){
+    Axios.get("https://api.themoviedb.org/3/search/movie?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=it-IT&include_adult=false&query=ciao").then((response) => {
+      this.movieResults = response.data;
+    });
   }
 }
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 *{
   margin: 0;
   padding: 0;
@@ -23,5 +39,6 @@ export default {
 }
 body {
   background-color: #564D4D;
+  font-family: 'Roboto', sans-serif;
 }
 </style>

@@ -1,17 +1,35 @@
 <template>
   <div class="flip-card">
-  <div class="flip-card-inner">
-    <div class="flip-card-front">
-      <img v-if="item.poster_path != null" :src="'https://image.tmdb.org/t/p/w500' + item.poster_path">
-    </div>
-    <div class="flip-card-back">
-      <div><span>Titolo: </span> {{ item.title }}</div>
-      <div v-if="item.original_title != item.title"><span>Titolo originale: </span> {{ item.original_title }}</div>
-      <div><span>Voto: </span>{{ item.vote_average }}</div>
-      <div v-if="item.overview != ''"><span>Overview: </span>{{ item.overview }}</div>
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <img class="cover"
+          v-if="item.poster_path != null"
+          :src="'https://image.tmdb.org/t/p/w500' + item.poster_path"
+        />
+      </div>
+      <div class="flip-card-back">
+        <div><span>Titolo: </span> {{ item.title }}</div>
+        <div v-if="item.original_title != item.title">
+          <span>Titolo originale: </span> {{ item.original_title }}
+        </div>
+        <div>
+          <span>Lingua originale: </span>
+          <img
+            class="flag"
+            :src="
+              'https://flagcdn.com/w20/' +
+              getCountryCode(item.original_language) +
+              '.png'
+            "
+          />
+        </div>
+        <div><span>Voto: </span>{{ item.vote_average }}</div>
+        <div v-if="item.overview != ''">
+          <span>Overview: </span>{{ item.overview }}
+        </div>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -20,18 +38,34 @@ export default {
   props: {
     item: Object,
   },
+  methods: {
+    getCountryCode(lang){
+      switch (lang) {
+        case 'en':
+          return "us";
+        case 'ja':
+          return "jp";
+        case 'ko':
+          return "kr";
+        case "zh":
+          return 'cn';
+        default:
+          return lang;
+    }
+  }
+},
 };
 </script>
 <style lang="scss" scoped>
-  .flip-card {
+.flip-card {
   background-color: transparent;
   width: 300px;
   height: 400px;
-  border: 1px solid #f1f1f1;
-  perspective: 1000px; 
+  border: 1px solid #8f8f8f;
+  perspective: 1000px;
 }
 
-.flip-card img{
+.flip-card .cover {
   width: 100%;
   height: 100%;
 }
@@ -48,7 +82,8 @@ export default {
   transform: rotateY(180deg);
 }
 
-.flip-card-front, .flip-card-back {
+.flip-card-front,
+.flip-card-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -69,12 +104,15 @@ export default {
   overflow-y: scroll;
 }
 
-.flip-card-back div{
+.flip-card-back div {
   margin-bottom: 10px;
 }
 
-.flip-card-back span{
+.flip-card-back span {
   font-weight: 800;
 }
 
+.flag{
+  width: 20px;
+}
 </style>

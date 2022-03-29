@@ -12,10 +12,7 @@ import SearchComp from './SearchComp.vue';
 
 export default {
   components: { SearchComp },
-   name: 'HeaderComp', 
-  props: {
-    msg: String
-  },
+  name: 'HeaderComp', 
   methods: {
     search(query){
       this.$emit("search", query);

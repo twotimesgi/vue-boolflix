@@ -1,7 +1,8 @@
 <template>
   <main>
-    <div class="main-container">
-      <card-comp v-for="item in movieResults.results" :item="item" :key="item.id"/> 
+     <div class="main-container">
+       <div class="title-box">Risultati per: "{{ query }}"</div>
+      <card-comp v-for="item in mResults.results" :item="item" :key="item.id"/> 
     </div>
   </main>
 </template>
@@ -15,7 +16,8 @@ export default {
     CardComp
   },
   props:{
-    movieResults: Object
+    mResults: Object,
+    query: String
   }
 }
 </script>
@@ -30,5 +32,10 @@ export default {
     justify-content: center;
     margin: 0 auto;
     padding: 30px 0;
+  }
+  .title-box{
+    width: 100%;
+    padding: 0 20px;
+    color: rgb(201, 201, 201);
   }
 </style>

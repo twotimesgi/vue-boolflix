@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <header-comp />
+    <header-comp @search="search"/>
     <main-comp :movieResults="movieResults"/>
   </div>
 </template>
@@ -18,13 +18,20 @@ export default {
   },
   data(){
     return {  
-      movieResults: {}
+      movieResults: {},
     }
   },
   mounted(){
-    Axios.get("https://api.themoviedb.org/3/search/movie?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=it-IT&include_adult=false&query=ciao").then((response) => {
+    this.search(null);
+  },
+  methods:{
+    search(query){
+      let query_url;
+      query == null ? query_url = "https://api.themoviedb.org/3/discover/movie?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&sort_by=popularity.desc" : query_url = "https://api.themoviedb.org/3/search/movie?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=it-IT&include_adult=false&query="+query;
+      Axios.get(query_url).then((response) => {
       this.movieResults = response.data;
     });
+    }
   }
 }
 </script>

@@ -19,7 +19,6 @@ export default {
   methods: {
     search(query){
       this.$emit("search", query);
-      console.log(query)
     }
   }
 }

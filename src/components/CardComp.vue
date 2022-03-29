@@ -6,6 +6,10 @@
           v-if="item.poster_path != null"
           :src="'https://image.tmdb.org/t/p/w500' + item.poster_path"
         />
+        <div v-else>
+          <div class="circ">!</div>
+          <div class="title">{{ item.title }}</div>  
+        </div>
       </div>
       <div class="flip-card-back">
         <div><span>Titolo: </span> {{ item.title }}</div>
@@ -69,6 +73,8 @@ export default {
           return {res: true, text: "fr"};
         case "pt":
           return {res: true, text: "pt"};
+        case "es":
+          return {res: true, text: "es"};
         default:
           return {res: false, text: lang};
     }
@@ -138,4 +144,27 @@ export default {
 .flag{
   width: 20px;
 }
+
+.flip-card-front .circ{
+  width: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100px;
+  background-color: white;
+  opacity: 0.5;
+  border-radius: 50%;
+  line-height: 6.5rem;
+  font-size: 5rem;
+  text-align: center;
+}
+
+.title{
+  color: white;
+  width: 90%;
+  margin: 10px auto;
+  text-align: center;
+}
+
 </style>

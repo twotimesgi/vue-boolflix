@@ -1,6 +1,7 @@
 <template>
     <div class="search">
-      <input class="search-field" placeholder="Cerca..." @input="$emit('search', query)" v-model="query" type="text">
+      <input class="search-field" placeholder="Cerca..."  v-model="query" type="text">
+      <input type="button" @click="$emit('search', query)">
   </div>
 </template> 
 

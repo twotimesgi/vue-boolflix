@@ -3,7 +3,7 @@
      <div class="main-container">
         <div v-if="query != ''" class="title-box">Films per: "{{ query }}"</div>
         <div v-else class="title-box">Film Popolari</div>
-      <card-comp v-for="item in mResults.results" :item="item" :key="item.id"/> 
+        <card-comp v-for="item in mResults.results" :item="item" :key="item.id"/> 
         <div v-if="query != ''" class="title-box">Serie TV per: "{{ query }}"</div>
         <div v-else class="title-box">Serie TV Popolari</div>
       <card-comp v-for="item in sResults.results" :item="item" :key="item.id" />

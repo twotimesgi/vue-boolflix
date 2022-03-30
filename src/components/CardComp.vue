@@ -32,8 +32,8 @@
         <span v-for="i in Math.ceil(item.vote_average / 2)" :key="i">&#9733;</span>
         <span v-for="i in 5 - Math.ceil(item.vote_average / 2)" :key="i+5">&#9734;</span>
         </div>
-        <div v-if="cast.length > 0"><span>Cast: </span><ul><li v-for="i in cast" :key="i.id"> {{ i.name }}</li></ul>
-        </div>
+        <div v-if="cast.length > 0"><span>Cast: </span><ul><li v-for="i in cast" :key="i.id"> {{ i.name }}</li></ul></div>
+        <div v-if="cast.length > 0"><span>Genres: </span><ul><li v-for="i in genres" :key="i"> {{ i }}</li></ul></div>
         <div v-if="item.overview != ''">
           <span>Overview: </span>{{ item.overview }}
         </div>
@@ -52,11 +52,13 @@ export default {
   },
   data(){
     return {
-      cast: null
+      cast: [],
+      genres: []
     }
   },
   created(){
     this.getCast(this.item);
+    this.getGenres(this.item)
   },
   methods: {
     langToCountryCode(lang){
@@ -96,9 +98,24 @@ export default {
     getCast(item){
       let query;
       // se ha questa prop. è una serie
-      item.origin_country ? query = "https://api.themoviedb.org/3/tv/"+item.id+"/credits?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=en-US" : query = "https://api.themoviedb.org/3/movie/"+item.id+"/credits?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=en-US";
+      item.origin_country ? query = "https://api.themoviedb.org/3/tv/"+item.id+"/credits?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=it-IT" : query = "https://api.themoviedb.org/3/movie/"+item.id+"/credits?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=it-IT";
       Axios.request(query).then((resp)=>{
         this.cast = resp.data.cast.splice(0,5);
+      });
+    },
+    getGenres(item){
+      let query;
+      // se ha questa prop. è una serie
+      item.origin_country ? query = "https://api.themoviedb.org/3/genre/tv/list?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=it-IT" : query = "https://api.themoviedb.org/3/genre/movie/list?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=it-IT" ;
+      Axios.request(query).then((resp)=>{
+        resp.data.genres.forEach(genrey => {
+          item.genre_ids.forEach((genrex)=>{
+              if(genrey.id == genrex){
+                this.genres.push(genrey.name);
+              }
+          });
+        });
+        console.log(this.genres)
       });
     }
   }

@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="flip-card-back">
-        <div><span>Titolo: </span> {{ item.title }}</div>
+        <div><span>Titolo: </span> {{ item.origin_country ? item.name : item.title}}</div>
         <div v-if="item.original_title != item.title">
           <span>Titolo originale: </span> {{ item.original_title }}
         </div>
@@ -32,7 +32,7 @@
         <span v-for="i in Math.ceil(item.vote_average / 2)" :key="i">&#9733;</span>
         <span v-for="i in 5 - Math.ceil(item.vote_average / 2)" :key="i+5">&#9734;</span>
         </div>
-        <div><span>Cast: </span><ul><li v-for="i in cast" :key="i.id"> {{ i.name }}</li></ul>
+        <div v-if="cast.length > 0"><span>Cast: </span><ul><li v-for="i in cast" :key="i.id"> {{ i.name }}</li></ul>
         </div>
         <div v-if="item.overview != ''">
           <span>Overview: </span>{{ item.overview }}
@@ -87,20 +87,19 @@ export default {
           return {res: true, text: "pt"};
         case "es":
           return {res: true, text: "es"};
+        case "sv":
+          return {res: true, text: "se"};
         default:
           return {res: false, text: lang};
       }
     },
     getCast(item){
-      if(item.origin_country){
-      Axios.request("https://api.themoviedb.org/3/tv/"+item.id+"/credits?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=en-US").then((resp)=>{
+      let query;
+      // se ha questa prop. è una serie
+      item.origin_country ? query = "https://api.themoviedb.org/3/tv/"+item.id+"/credits?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=en-US" : query = "https://api.themoviedb.org/3/movie/"+item.id+"/credits?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=en-US";
+      Axios.request(query).then((resp)=>{
         this.cast = resp.data.cast.splice(0,5);
       });
-      }else{
-        Axios.request("https://api.themoviedb.org/3/movie/"+item.id+"/credits?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=en-US").then((resp)=>{
-          this.cast = resp.data.cast.splice(0,5); 
-      });
-      }
     }
   }
 };

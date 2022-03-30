@@ -32,6 +32,8 @@
         <span v-for="i in Math.ceil(item.vote_average / 2)" :key="i">&#9733;</span>
         <span v-for="i in 5 - Math.ceil(item.vote_average / 2)" :key="i+5">&#9734;</span>
         </div>
+        <div><span>Cast: </span><ul><li v-for="i in cast" :key="i.id"> {{ i.name }}</li></ul>
+        </div>
         <div v-if="item.overview != ''">
           <span>Overview: </span>{{ item.overview }}
         </div>
@@ -41,10 +43,20 @@
 </template>
 
 <script>
+import Axios from "axios";
+
 export default {
   name: "CardComp",
   props: {
     item: Object,
+  },
+  data(){
+    return {
+      cast: null
+    }
+  },
+  created(){
+    this.getCast(this.item);
   },
   methods: {
     langToCountryCode(lang){
@@ -77,9 +89,20 @@ export default {
           return {res: true, text: "es"};
         default:
           return {res: false, text: lang};
+      }
+    },
+    getCast(item){
+      if(item.origin_country){
+      Axios.request("https://api.themoviedb.org/3/tv/"+item.id+"/credits?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=en-US").then((resp)=>{
+        this.cast = resp.data.cast.splice(0,5);
+      });
+      }else{
+        Axios.request("https://api.themoviedb.org/3/movie/"+item.id+"/credits?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=en-US").then((resp)=>{
+          this.cast = resp.data.cast.splice(0,5); 
+      });
+      }
     }
   }
-},
 };
 </script>
 <style lang="scss" scoped>
@@ -94,6 +117,9 @@ export default {
   perspective: 1000px;
 }
 
+ul{
+  list-style: none;
+}
 .flip-card .cover {
   width: 100%;
   height: 100%;

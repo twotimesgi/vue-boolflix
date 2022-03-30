@@ -46,6 +46,7 @@ header{
 @media screen and (max-width: 600px){
   .header-container{
     flex-direction: column;
+    align-items: center;
   }
 }
 </style>

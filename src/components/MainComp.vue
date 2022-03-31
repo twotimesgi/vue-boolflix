@@ -2,28 +2,48 @@
   <main>
      <div class="main-container">
         <div v-if="query != ''" class="title-box">Films per: "{{ query }}"</div>
-        <div v-else class="title-box">Film Popolari</div>
-        <card-comp v-for="item in mResults.results" :item="item" :key="item.id"/> 
+        <div v-else class="title-box">Film Popolari         <filter-comp @filter="mFilter" :collection="mGenres" /></div> 
+        <card-comp v-show="item.genre_ids.includes(mCat) || mCat == '' " :mGenres = "mGenres" :sGenres = "sGenres" v-for="item in mResults.results" :item="item" :key="item.id"/> 
         <div v-if="query != ''" class="title-box">Serie TV per: "{{ query }}"</div>
-        <div v-else class="title-box">Serie TV Popolari</div>
-      <card-comp v-for="item in sResults.results" :item="item" :key="item.id" />
+        <div v-else class="title-box">Serie TV Popolari         <filter-comp @filter="sFilter" :collection="sGenres"/></div>
+      <card-comp v-show="item.genre_ids.includes(sCat) || sCat == '' " :catFilter="sCat" :mGenres = "mGenres" :sGenres = "sGenres" v-for="item in sResults.results" :item="item" :key="item.id" />
      </div>
   </main>
 </template>
 
-<script>
+<script> 
 import CardComp from './CardComp.vue'
+import FilterComp from './FilterComp.vue'
 
 export default {
   name: 'MainComp', 
   components:{
     CardComp,
+    FilterComp
   },
   props:{
     mResults: Object,
     sResults: Object,
     query: String,
-    loaded: Boolean
+    loaded: Boolean,
+    mGenres: Array,
+    sGenres: Array
+  },
+  data(){
+    return {
+      mCat: "",
+      sCat: ""
+    }
+  },
+  methods: {
+    mFilter(mCat){
+      this.mCat = mCat;
+      console.log(mCat)
+    },
+    sFilter(sCat){
+      this.sCat = sCat;
+      console.log(sCat)
+    }
   }
 }
 </script>

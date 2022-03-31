@@ -2,7 +2,7 @@
   <header>
     <div class="header-container">
       <img class="logo" src="../assets/logo.png">
-      <search-comp @search="search"/>
+        <search-comp @search="search" />
     </div>
   </header>
 </template>

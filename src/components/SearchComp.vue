@@ -2,13 +2,6 @@
     <div class="search">
       <input class="search-field" placeholder="Cerca..."  v-model="query" type="text">
       <input class="btn" type="button" value="Cerca" @click="$emit('search', query)">
-      <div class="btn-menu">
-        <input class="btn" type="button" value="Filtri" @click="toggleMenu">
-        <div :class="menuOpened ? 'show' : ''" class="filters-menu">
-            asdsd
-        </div>
-      </div>
-
   </div>
 </template> 
 
@@ -36,6 +29,7 @@ export default {
     width: 100%;
     flex-grow: 1;
     display: flex;
+    justify-content: flex-end;
 }
 
 .search-field{
@@ -59,28 +53,9 @@ export default {
     background-color: #831010;
   }
 }
-.btn-menu{
-  position: relative;
-}
-
-.btn-menu .btn::after{
-  content: '\2304';
-  display: block;
-}
-
-.filters-menu{
-  background-color: black;
-  width: 400px;
-  height: 400px;
-  border: 1px solid white;
-  display: none;
-  position: absolute;
-  top:  30px;
-  z-index: 100;
-  right: 10px;
-}
-
-.filters-menu.show{
-  display: block;
+@media screen and (max-width: 600px){
+  .search{
+    justify-content: center; 
+  }
 }
 </style>

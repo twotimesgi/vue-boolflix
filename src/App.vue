@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header-comp @search="search" />
-    <main-comp :query="query" :loaded="loaded" :sResults ="sResults" :mResults="mResults"/>
+    <main-comp :query="query" :mGenres = "mGenres" :sGenres = "sGenres" :loaded="loaded" :sResults ="sResults" :mResults="mResults"/>
   </div>
 </template>
  
@@ -21,11 +21,14 @@ export default {
       mResults: {},
       sResults: {},
       query: "",
-      loaded: false
+      loaded: false,
+      sGenres: [],
+      mGenres: [],
     }
   },
   mounted(){
     this.search("");
+    this.getGenres();
   },
   methods:{
     searchMovies(query){
@@ -47,7 +50,15 @@ export default {
   search(query){
     this.searchMovies(query);
     this.searchSeries(query);
-  }
+  },
+  getGenres(){
+    Axios.get("https://api.themoviedb.org/3/genre/tv/list?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=it-IT").then((resp)=>{
+      this.sGenres = resp.data.genres;
+    });
+    Axios.get("https://api.themoviedb.org/3/genre/movie/list?api_key=4ebc0e330e97f1a5c5b347b8ac63bdbb&language=it-IT").then((resp)=>{
+      this.mGenres = resp.data.genres;
+    });
+    }
   }
 }
 </script>
